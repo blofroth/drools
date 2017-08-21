@@ -37,6 +37,8 @@ if [ -n "$KIE_SERVER_CONTROLLER" ]; then
     JBOSS_ARGUMENTS="$JBOSS_ARGUMENTS -Dorg.kie.server.controller=$KIE_SERVER_CONTROLLER -Dorg.kie.server.controller.user=$KIE_SERVER_CONTROLLER_USER -Dorg.kie.server.controller.pwd=$KIE_SERVER_CONTROLLER_PWD "
 fi
 
+JBOSS_ARGUMENTS="$JBOSS_ARGUMENTS -Dkie.maven.settings.custom=/opt/jboss/.m2/settings.xml" 
+
 # Start Wildfly with the given arguments.
 echo "Running KIE Execution Server on JBoss Wildfly..."
 exec ./standalone.sh $JBOSS_ARGUMENTS -c standalone-full-kie-server.xml

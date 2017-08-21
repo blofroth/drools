@@ -3,31 +3,33 @@
 #################################################################################
 
 ####### BASE ############
-FROM jboss/kie-server:7.1.0.Final
+FROM jboss/kie-server:latest
 
 ####### MAINTAINER ############
 MAINTAINER "Michael Biarnes Kiefer" "mbiarnes@redhat.com"
 
 ####### ENVIRONMENT ############
 # ENV KIE_SERVER_ID kie-server
-ENV KIE_SERVER_LOCATION http://localhost:8080/kie-server/services/rest/server
+# ENV KIE_CONTEXT drools-wb
+ENV KIE_CONTEXT jbpm-console
+ENV KIE_SERVER_LOCATION http://localhost:8080/${KIE_CONTEXT}/services/rest/server
 ENV KIE_SERVER_USER kieserver
 ENV KIE_SERVER_PWD kieserver1!
-# ENV KIE_SERVER_CONTROLLER http://localhost:8080/kie-wb/rest/controller
+ENV KIE_SERVER_CONTROLLER http://kie_wb:8080/${KIE_CONTEXT}/rest/controller
 ENV KIE_SERVER_CONTROLLER_USER admin
 ENV KIE_SERVER_CONTROLLER_PWD admin
-ENV KIE_MAVEN_REPO http://localhost:8080/kie-wb/maven2
+ENV KIE_MAVEN_REPO http://kie_wb:8080/${KIE_CONTEXT}/maven2
 ENV KIE_MAVEN_REPO_USER admin
 ENV KIE_MAVEN_REPO_PASSWORD admin
 ENV JAVA_OPTS -Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true
 
 ####### Drools KIE Server CUSTOM CONFIGURATION ############
-RUN mkdir -p $HOME/.m2
+RUN mkdir -p /opt/jboss/.m2/repository
 ADD etc/standalone-full-kie-server.xml $JBOSS_HOME/standalone/configuration/standalone-full-kie-server.xml
 ADD etc/kie-server-users.properties $JBOSS_HOME/standalone/configuration/kie-server-users.properties
 ADD etc/kie-server-roles.properties $JBOSS_HOME/standalone/configuration/kie-server-roles.properties
 ADD etc/start_kie-server.sh $JBOSS_HOME/bin/start_kie-server.sh
-ADD etc/settings.xml $JBOSS_HOME/../.m2/settings.xml
+ADD etc/settings.xml /opt/jboss/.m2/settings.xml
 
 # Added files are chowned to root user, change it to the jboss one.
 USER root
@@ -35,7 +37,7 @@ RUN chown jboss:jboss $JBOSS_HOME/standalone/configuration/standalone-full-kie-s
 chown jboss:jboss $JBOSS_HOME/standalone/configuration/kie-server-users.properties && \
 chown jboss:jboss $JBOSS_HOME/standalone/configuration/kie-server-roles.properties && \
 chown jboss:jboss $JBOSS_HOME/bin/start_kie-server.sh && \
-chown jboss:jboss $JBOSS_HOME/../.m2/settings.xml
+chown jboss:jboss /opt/jboss/.m2/settings.xml
 
 ####### JBOSS USER ############
 # Switchback to jboss user

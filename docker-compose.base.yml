@@ -1,0 +1,11 @@
+version: '3'
+services:
+  kie_server_base:
+    image: jboss/kie-server:latest
+    build:
+      context: ./kie-server/base
+
+  drools_wb_base:
+    image: jboss/drools-workbench:latest
+    build:
+      context: ./drools-wb/base 

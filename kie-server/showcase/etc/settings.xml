@@ -28,7 +28,7 @@ under the License.
       KIE_MAVEN_REPO_PASSWORD - Defaults to admin
 -->
 <settings>
-  <localRepository>${env.HOME}/.m2/repository</localRepository>
+  <localRepository>/opt/jboss/.m2/repository</localRepository>
 
   <proxies>
   </proxies>
@@ -36,8 +36,8 @@ under the License.
   <servers>
     <server>
       <id>kie-workbench</id>
-      <username>${env.KIE_MAVEN_REPO_USER}</username>
-      <password>${env.KIE_MAVEN_REPO_PASSWORD}</password>
+      <username>admin</username>
+      <password>admin</password>
       <configuration>
         <wagonProvider>httpclient</wagonProvider>
         <httpConfiguration>
@@ -75,7 +75,7 @@ under the License.
         <repository>
           <id>kie-workbench</id>
           <name>JBoss BRMS Guvnor M2 Repository</name>
-          <url>${env.KIE_MAVEN_REPO}</url>
+          <url>http://kie_wb:8080/drools-wb/maven2</url>
           <layout>default</layout>
           <releases>
             <enabled>true</enabled>

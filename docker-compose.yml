@@ -9,21 +9,20 @@ services:
     links:
      - kie_wb
     volumes:
+     # need shared Maven repo because of issue with Aether auth
      - "m2-data:/opt/jboss/.m2/repository"
     environment:
      - KIE_SERVER_LOCATION=http://kie_server:8080/kie-server/services/rest/server 
-     - KIE_SERVER_CONTROLLER http://kie_wb:8080/drools-wb/rest/controller
-
+     - KIE_SERVER_CONTROLLER=http://kie_wb:8080/${KIE_CONTEXT:-jbpm-console}/rest/controller
+     - KIE_MAVEN_REPO=http://kie_wb:8080/${KIE_CONTEXT:-jbpm-console}/maven2
   kie_wb:
-    #image: jboss/drools-workbench-showcase:latest
-    #build:
-    #  context: "./drools-wb/showcase"
-    image: jboss/jbpm-workbench-showcase:latest
+    image: jboss/${KIE_IMAGE_PREFIX:-jbpm}-workbench-showcase:latest
     ports:
     - "8080:8080"
     - "8001:8001"
     - "9990:9990"
     volumes:
+    # need shared Maven repo because of issue with Aether auth
      - "m2-data:/opt/jboss/.m2/repository"
     environment:
     - JAVA_OPTS=-Djava.net.preferIPv4Stack=true

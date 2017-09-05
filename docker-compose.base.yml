@@ -8,4 +8,10 @@ services:
   drools_wb_base:
     image: jboss/drools-workbench:latest
     build:
-      context: ./drools-wb/base 
+      context: ./drools-wb/base
+
+  jbpm_wb_base:
+      image: jboss/jbpm-workbench:latest
+      build:
+        # assume checked out with the same parent directory
+        context: ../jbpm/base
